@@ -1,97 +1,63 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, { Component } from "react";
+import Stats from "../stats";
 
-const Game = () => {
-    
-    const d1 = useRef(null)
-    const d2 = useRef()
-    const d3 = useRef()
-    const d4 = useRef()
-    const d5 = useRef()
-    const d6 = useRef()
-    const d7 = useRef()
-    const d8 = useRef()
-    const d9 = useRef()
+class Game extends Component {
+  constructor() {
+    super();
+    this.state = {
+      side: "top",
+      position: 50,
+    };
+  }
 
-    const [ list, setList] = useState({})
-    const [turn, setTurn] = useState(false)
-    const [boxClicked, setBoxClicked] = useState(null)
-    const [winner, setWinner] = useState()
+  componentDidMount = () => {
+    // const sides = ["left", "right", "top", "bottom"];
+    // const side = Math.floor(Math.random() * 4);
+    // this.setState({
+    //   side: sides[side],
+    // });
+    // this.setState({ position: Math.floor(Math.random() * 100) });
 
-    useEffect(()=>{
-        if(!winner){
-            boxHandler()
-        }
-    },[boxClicked])
+    this.displayObj();
+  };
 
-    const boxHandler = () => {
+  displayObj = () => {
+    for (let i = 0; i <= 300; i++) {
+      if (this.state.side === "top") {
+        document.getElementById("redObj").style.top = `${0}px`;
 
-        if(!list[boxClicked]){
-            let turnValue = turn? "X": "O"
-            list[boxClicked] = turnValue
-            if(boxClicked === 1) {
-                d1.current.innerText = turnValue
-            }else  if(boxClicked === 2) {
-                d2.current.innerText = turnValue
-            }else  if(boxClicked === 3) {
-                d3.current.innerText = turnValue
-            }else  if(boxClicked === 4) {
-                d4.current.innerText = turnValue
-            }else  if(boxClicked === 5) {
-                d5.current.innerText = turnValue
-            }else  if(boxClicked === 6) {
-                d6.current.innerText = turnValue
-            }else  if(boxClicked === 7) {
-                d7.current.innerText = turnValue
-            }else  if(boxClicked === 8) {
-                d8.current.innerText = turnValue
-            }else  if(boxClicked === 9) {
-                d9.current.innerText = turnValue
-            }else {}
-            if(declareWinner()){
-                setWinner(turn? "X": "O")
-            }else{
-                setTurn((prevState)=> !prevState)
-            }
-        }
+        this.timeout();
+      }
+      i++;
     }
+  };
 
-    const turnHandler = (val) => {
-        setBoxClicked(val)
-    }
+  timeout = () => {
+    // setTimeout(function () /{
+    let l = document.getElementById("redObj").style.top;
+    console.log(l);
+    //   document.getElementById("redObj").style.bottom = `${defaultVal}px`;
+    //   document.getElementById("redObj").style.left = `${this.state.position}px`;
+    document.getElementById("redObj").style.top = `${l + 52}px`;
+    //   defaultVal = defaultVal + 1;
+    // document.getElementById("redObj").style.left = `${
+    //   this.state.position + 1
+    // }px`;
+    // }, 100);
+  };
 
-    const declareWinner = () => {
-        let patterns = [[1,2,3],[4,5,6],[7,8,9],[1,5,9],[3,5,7],[1,4,7],[2,5,8],[3,6,9]]
-        let result = false
-        patterns.map((e)=>{
-            let turnValue = turn ? "X": "O"
-            if(list[e[0]] === turnValue && list[e[1]]  === turnValue && list[e[2]]  === turnValue ){
-                result= true
-            }
-        })
-        return result
-    }
-
-    return(
-        <>
-            <h1>Tic Tac Toe</h1>
-            <div className="game">
-                <div onClick={()=>{turnHandler(1)}}><p ref={d1} className="txt"></p></div>
-                <div onClick={()=>{turnHandler(2)}}><p ref={d2} className="txt"></p></div>
-                <div onClick={()=>{turnHandler(3)}}><p ref={d3} className="txt"></p></div>
-                <div onClick={()=>{turnHandler(4)}}><p ref={d4} className="txt"></p></div>
-                <div onClick={()=>{turnHandler(5)}}><p ref={d5} className="txt"></p></div>
-                <div onClick={()=>{turnHandler(6)}}><p ref={d6} className="txt"></p></div>
-                <div onClick={()=>{turnHandler(7)}}><p ref={d7} className="txt"></p></div>
-                <div onClick={()=>{turnHandler(8)}}><p ref={d8} className="txt"></p></div>
-                <div onClick={()=>{turnHandler(9)}}><p ref={d9} className="txt"></p></div>
-            </div>
-            {
-                winner && ( <h2>{`${winner} is Winner !!!`}</h2>)
-            }
-        </>
-            
-        
-    )   
+  render() {
+    return (
+      <div>
+        <h2>Dodge Game</h2>
+        <Stats />
+        <div className="game">
+          <div id="redObj" className="redObj"></div>
+          <div className="obj"></div>
+        </div>
+      </div>
+    );
+  }
 }
 
-export default Game
+export default Game;
