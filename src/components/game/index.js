@@ -9,7 +9,7 @@ class Game extends Component {
       score: 0,
       highScore: 0,
       side: "top",
-      speed: 20,
+      speed: 60,
       redObjDisply: true,
     };
   }
@@ -28,16 +28,19 @@ class Game extends Component {
     console.log("high score ==> ", this.state.highScore);
     console.log("score ==> ", this.state.score);
     if (this.state.highScore < this.state.score) {
-      console.log("ksadfk sadfjl ksdlfsdlfj lk");
       this.setState({
+        time: 0,
+        score: 0,
         highScore: this.state.score,
+        redObjDisply: false,
+      });
+    } else {
+      this.setState({
+        time: 0,
+        score: 0,
+        redObjDisply: false,
       });
     }
-    this.setState({
-      time: 0,
-      score: 0,
-      redObjDisply: false,
-    });
 
     document.getElementById("greyObj").style.left = "135px";
     document.getElementById("greyObj").style.top = "150px";
@@ -132,7 +135,7 @@ class Game extends Component {
           clearInterval(interval);
         }
       }
-    }, 1000);
+    }, 700);
   }
 
   // is colling both div

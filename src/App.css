@@ -30,7 +30,7 @@
   height: 30px;
   background-color: brown;
   position: absolute;
-  transition: 3s ease;
+  transition: all 3s ease;
 }
 
 .sub {
