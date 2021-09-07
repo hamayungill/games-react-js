@@ -11,8 +11,17 @@ class Game extends Component {
       side: "top",
       speed: 60,
       redObjDisply: true,
+      redTop: null,
+      redBottom: null,
+      redLeft: null,
+      redRight: null,
+      greyTop: 150,
+      greyBottom: null,
+      greyLeft: 135,
+      greyRight: null,
     };
   }
+
   componentDidMount() {
     setInterval(() => {
       this.setState({
@@ -25,55 +34,52 @@ class Game extends Component {
   }
 
   restart() {
-    console.log("high score ==> ", this.state.highScore);
-    console.log("score ==> ", this.state.score);
     if (this.state.highScore < this.state.score) {
       this.setState({
         time: 0,
         score: 0,
         highScore: this.state.score,
         redObjDisply: false,
+        greyLeft: 135,
+        greyTop: 150,
       });
     } else {
       this.setState({
         time: 0,
         score: 0,
         redObjDisply: false,
+        greyLeft: 135,
+        greyTop: 150,
       });
     }
-
-    document.getElementById("greyObj").style.left = "135px";
-    document.getElementById("greyObj").style.top = "150px";
 
     this.displayRedObj();
   }
 
   greyObjHandler() {
+    let parentThis = this;
+
     document.addEventListener("keydown", function (e) {
       switch (e.keyCode) {
         case 37:
-          let leftInPx = document.getElementById("greyObj").style.left;
-          let left = leftInPx.replace("px", "");
-          document.getElementById("greyObj").style.left =
-            parseInt(left) - 2 + "px";
+          parentThis.setState({
+            greyLeft: parentThis.state.greyLeft - 2,
+          });
           break;
         case 38:
-          let topInPx = document.getElementById("greyObj").style.top;
-          let top = topInPx.replace("px", "");
-          document.getElementById("greyObj").style.top =
-            parseInt(top) - 2 + "px";
+          parentThis.setState({
+            greyTop: parentThis.state.greyTop - 2,
+          });
           break;
         case 39:
-          let rightInPx = document.getElementById("greyObj").style.left;
-          let right = rightInPx.replace("px", "");
-          document.getElementById("greyObj").style.left =
-            parseInt(right) + 2 + "px";
+          parentThis.setState({
+            greyLeft: parentThis.state.greyLeft + 2,
+          });
           break;
         case 40:
-          let bottomInPx = document.getElementById("greyObj").style.top;
-          let bottom = bottomInPx.replace("px", "");
-          document.getElementById("greyObj").style.top =
-            parseInt(bottom) + 2 + "px";
+          parentThis.setState({
+            greyTop: parentThis.state.greyTop + 2,
+          });
           break;
       }
     });
@@ -84,7 +90,16 @@ class Game extends Component {
     this.setState({
       redObjDisply: true,
     });
-    document.getElementById("redObj").style[this.state.side] = 0 + "px";
+    if (this.state.side === "top") {
+      this.setState({ redTop: 0 });
+    } else if (this.state.side === "right") {
+      this.setState({ redRight: 0 });
+    } else if (this.state.side === "left") {
+      this.setState({ redLeft: 0 });
+    } else if (this.state.side === "bottom") {
+      this.setState({ redBottom: 0 });
+    } else {
+    }
 
     // sides array
     let sides = ["top", "left", "right", "bottom"];
@@ -95,19 +110,28 @@ class Game extends Component {
     this.setState({
       side,
     });
+
     // setting initiall position
     if (side === "top") {
-      document.getElementById("redObj").style.top = "0px";
-      document.getElementById("redObj").style.left = `${pos}px`;
+      this.setState({
+        redTop: 0,
+        redLeft: pos,
+      });
     } else if (side === "bottom") {
-      document.getElementById("redObj").style.bottom = "0px";
-      document.getElementById("redObj").style.right = `${pos}px`;
+      this.setState({
+        redBottom: 0,
+        redRight: pos,
+      });
     } else if (side === "left") {
-      document.getElementById("redObj").style.left = "0px";
-      document.getElementById("redObj").style.top = `${pos}px`;
+      this.setState({
+        redLeft: 0,
+        redTop: pos,
+      });
     } else if (side === "right") {
-      document.getElementById("redObj").style.right = "0px";
-      document.getElementById("redObj").style.bottom = `${pos}px`;
+      this.setState({
+        redRight: 0,
+        redBottom: pos,
+      });
     } else {
     }
     this.moveRedobj(side);
@@ -123,35 +147,59 @@ class Game extends Component {
         this.restart();
         clearInterval(interval);
       } else {
-        let valInPx = document.getElementById("redObj").style[side];
-        let val = valInPx.replace("px", "");
-        document.getElementById("redObj").style[side] =
-          parseInt(val) + this.state.speed + "px";
-        if (parseInt(val) >= 330) {
+        if (this.state.side === "top") {
           this.setState({
-            redObjDisply: false,
+            redTop: this.state.redTop + this.state.speed,
           });
-          this.displayRedObj();
-          clearInterval(interval);
+          this.displayAnotherRed(this.state.redTop, interval);
+        } else if (this.state.side === "right") {
+          this.setState({
+            redRight: this.state.redRight + this.state.speed,
+          });
+          this.displayAnotherRed(this.state.redRight, interval);
+        } else if (this.state.side === "left") {
+          this.setState({
+            redLeft: this.state.redLeft + this.state.speed,
+          });
+          this.displayAnotherRed(this.state.redLeft, interval);
+        } else if (this.state.side === "bottom") {
+          this.setState({
+            redBottom: this.state.redBottom + this.state.speed,
+          });
+          this.displayAnotherRed(this.state.redBottom, interval);
+        } else {
         }
       }
-    }, 700);
+    }, 1000);
+  }
+
+  displayAnotherRed(val, interval) {
+    if (parseInt(val) >= 330) {
+      this.setState({
+        redObjDisply: false,
+      });
+      this.displayRedObj();
+      clearInterval(interval);
+    }
   }
 
   // is colling both div
   isColliding() {
     let div1 = document.getElementById("redObj").getBoundingClientRect();
     let div2 = document.getElementById("greyObj").getBoundingClientRect();
+    const {
+      top: div1Top,
+      left: div1Left,
+      bottom: div1Bottom,
+      right: div1Right,
+    } = div1;
 
-    let div1Top = div1.top;
-    let div1Left = div1.left;
-    let div1Bottom = div1.bottom;
-    let div1Right = div1.right;
-
-    let div2Top = div2.top;
-    let div2Left = div2.left;
-    let div2Bottom = div2.bottom;
-    let div2Right = div2.right;
+    const {
+      top: div2Top,
+      left: div2Left,
+      bottom: div2Bottom,
+      right: div2Right,
+    } = div2;
 
     let verticalMatch = false;
     let horizontalMatch = false;
@@ -187,6 +235,8 @@ class Game extends Component {
   }
 
   render() {
+    const { redBottom, redLeft, redRight, redTop, greyLeft, greyTop } =
+      this.state;
     return (
       <div>
         <h2>Dodge Game</h2>
@@ -198,12 +248,21 @@ class Game extends Component {
 
         <div className="game">
           {this.state.redObjDisply && (
-            <div id="redObj" className="redObj"></div>
+            <div
+              id="redObj"
+              className="redObj"
+              style={{
+                bottom: redBottom + "px",
+                top: redTop + "px",
+                left: redLeft + "px",
+                right: redRight + "px",
+              }}
+            ></div>
           )}
           <div
             id="greyObj"
             className="greyObj"
-            style={{ left: "135px", top: "150px" }}
+            style={{ left: greyLeft + "px", top: greyTop + "px" }}
           ></div>
         </div>
       </div>
