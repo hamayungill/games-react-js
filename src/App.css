@@ -18,19 +18,19 @@
   position: relative;
   overflow: hidden;
 }
-.obj {
+.greyObj {
   width: 30px;
   height: 30px;
   background-color: grey;
-  top: 50%;
-  left: calc(50% - 15px);
   position: absolute;
 }
+
 .redObj {
   width: 30px;
   height: 30px;
   background-color: brown;
   position: absolute;
+  transition: 3s ease;
 }
 
 .sub {
