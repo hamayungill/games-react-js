@@ -107,9 +107,6 @@ class Game extends Component {
     // get side and position
     let side = sides[Math.floor(Math.random() * sides.length)];
     let pos = Math.floor(Math.random() * (270 - 30 + 1) + 30);
-    this.setState({
-      side,
-    });
 
     // setting initiall position
     if (side === "top") {
@@ -147,22 +144,22 @@ class Game extends Component {
         this.restart();
         clearInterval(interval);
       } else {
-        if (this.state.side === "top") {
+        if (side === "top") {
           this.setState({
             redTop: this.state.redTop + this.state.speed,
           });
           this.displayAnotherRed(this.state.redTop, interval);
-        } else if (this.state.side === "right") {
+        } else if (side === "right") {
           this.setState({
             redRight: this.state.redRight + this.state.speed,
           });
           this.displayAnotherRed(this.state.redRight, interval);
-        } else if (this.state.side === "left") {
+        } else if (side === "left") {
           this.setState({
             redLeft: this.state.redLeft + this.state.speed,
           });
           this.displayAnotherRed(this.state.redLeft, interval);
-        } else if (this.state.side === "bottom") {
+        } else if (side === "bottom") {
           this.setState({
             redBottom: this.state.redBottom + this.state.speed,
           });
