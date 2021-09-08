@@ -106,7 +106,7 @@ class Game extends Component {
 
     // get side and position
     let side = sides[Math.floor(Math.random() * sides.length)];
-    let pos = Math.floor(Math.random() * (270 - 30 + 1) + 30);
+    let pos = Math.floor(Math.random() * 270);
 
     // setting initiall position
     if (side === "top") {
@@ -171,7 +171,7 @@ class Game extends Component {
   }
 
   displayAnotherRed(val, interval) {
-    if (parseInt(val) >= 330) {
+    if (parseInt(val) >= 350) {
       this.setState({
         redObjDisply: false,
       });
