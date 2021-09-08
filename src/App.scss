@@ -1,0 +1,39 @@
+$primary-color: #282c34;
+$second-color: grey;
+$third-color: black;
+$fourth-color: white;
+
+%flex-wrap {
+  display: flex;
+}
+
+/* game component  */
+.main {
+  @extend %flex-wrap;
+  background-color: $primary-color;
+  min-height: 100vh;
+  // display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: $fourth-color;
+}
+
+.game {
+  @extend %flex-wrap;
+  border: 1px solid $primary-color;
+  width: 300px;
+  height: 300px;
+  // display: flex;
+  flex-wrap: wrap;
+  div {
+    width: 98px;
+    height: 98px;
+    background-color: $second-color;
+    border: 1px solid $fourth-color;
+  }
+  .txt {
+    text-align: center;
+    font-size: 30px;
+  }
+}
